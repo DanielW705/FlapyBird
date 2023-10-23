@@ -36,7 +36,7 @@ namespace FlapyBird.Sprites
             this.Texture = texture;
             this.Position = position;
         }
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime, float mult = 1.0f)
         {
 
         }

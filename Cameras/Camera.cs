@@ -22,14 +22,23 @@ namespace FlapyBird.Cameras
             cameraSpeed = speed;
         }
 
-        public void Update(Vector2 birdPosition, GameTime gameTime)
+        public void Update(Vector2 birdPosition, GameTime gameTime, float mult = 1.0f)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             float targetX = birdPosition.X - viewport.Width / 2;
 
-            // Interpola la posición de la cámara hacia la del pájaro con una velocidad basada en el tiempo
-            Position.X = MathHelper.Lerp(Position.X, targetX, cameraSpeed * deltaTime);
-            Position.Y = 0; // Puedes ajustar el eje vertical si es necesario
+            if (mult > 1.0f)
+            {
+                // Interpola la posición de la cámara hacia la del pájaro con una velocidad basada en el tiempo
+                Position.X = MathHelper.Lerp(Position.X, targetX, cameraSpeed * mult * deltaTime);
+                Position.Y = 0; // Puedes ajustar el eje vertical si es necesario
+            }
+            else
+            {
+                // Interpola la posición de la cámara hacia la del pájaro con una velocidad basada en el tiempo
+                Position.X = MathHelper.Lerp(Position.X, targetX, cameraSpeed * deltaTime);
+                Position.Y = 0; // Puedes ajustar el eje vertical si es necesario
+            }
         }
 
         public Matrix GetViewMatrix()

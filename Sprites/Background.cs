@@ -19,9 +19,9 @@ namespace FlapyBird.Sprites
 
             this.transform = transform;
         }
-        public void UpdateTransform(float player_position)
+        public void UpdateTransform(Matrix transform)
         {
-
+            this.transform = transform;
         }
         public override void Draw()
         {

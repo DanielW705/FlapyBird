@@ -21,7 +21,7 @@ namespace FlapyBird.Sprites
         public Vector2 lower_pipe_pos;
 
 
-        public float Speed = 1.0f;
+        public float Speed = 1.2f;
 
         public Rectangle Upper_Bounds
         {
@@ -34,7 +34,7 @@ namespace FlapyBird.Sprites
         {
             get
             {
-                return new Rectangle((int)upper_pipe_pos.X, (int)upper_pipe_pos.Y, lower_pipe.Width, lower_pipe.Height);
+                return new Rectangle((int)lower_pipe_pos.X, (int)lower_pipe_pos.Y, lower_pipe.Width, lower_pipe.Height);
             }
         }
         public Pipes()
@@ -43,8 +43,8 @@ namespace FlapyBird.Sprites
             lower_pipe = Global.Content.Load<Texture2D>("pipe_down");
             Random random = new Random();
             int space = random.Next(70, 150);
-            lower_pipe_pos = new Vector2(Global.Device.Viewport.Width - lower_pipe.Width, random.Next(50, 215) - lower_pipe.Height);
-            upper_pipe_pos = new Vector2(Global.Device.Viewport.Width - upper_pipe.Width, 500 - space - Math.Abs(lower_pipe_pos.Y));
+            lower_pipe_pos = new Vector2(Global.Device.Viewport.Width, random.Next(50, 215) - lower_pipe.Height);
+            upper_pipe_pos = new Vector2(Global.Device.Viewport.Width, 500 - space - Math.Abs(lower_pipe_pos.Y));
 
         }
         public void Draw()
@@ -57,8 +57,13 @@ namespace FlapyBird.Sprites
 
         public void Update(GameTime gameTime)
         {
+            float t = (float)gameTime.TotalGameTime.Seconds;
+            if (t % 30 == 0)
+                Speed += 0.2f;
+
             lower_pipe_pos.X -= Speed;
             upper_pipe_pos.X -= Speed;
+
         }
     }
 }

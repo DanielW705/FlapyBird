@@ -21,6 +21,9 @@ namespace FlapyBird
         private Camera Camera;
 
         private Pipes Pipe;
+
+        private float speed = 6.0f;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -39,7 +42,6 @@ namespace FlapyBird
 
             _graphics.ApplyChanges();
 
-            float speed = 6.0f;
 
             Camera = new Camera(GraphicsDevice.Viewport, speed);
 
@@ -66,20 +68,26 @@ namespace FlapyBird
         protected override void Update(GameTime gameTime)
         {
             //// TODO: Add your update logic here
-           if(Pipe.Upper_Bounds.Intersects(Player.Bounds) || Pipe.Lower_Bounds.Intersects(Player.Bounds))
-                Player.HasDied = true;
-            
-            Global.Update(gameTime);
+            if (Player.HasDied)
+            {
+                Player = new Player(Content.Load<Texture2D>("flappy"), new Vector2(0, 0), speed);
+                Pipe = new Pipes();
+            }
+            else
+            {
+                if (Pipe.Upper_Bounds.Intersects(Player.Bounds) || Pipe.Lower_Bounds.Intersects(Player.Bounds))
+                    Player.HasDied = true;
 
-            Camera.Update(Player.Position, gameTime);
+                if (Pipe.lower_pipe_pos.X < -70 && Pipe.upper_pipe_pos.X < -70)
+                    Pipe = new Pipes();
+                Global.Update(gameTime);
 
-            Player.Update(gameTime);
+                Camera.Update(Player.Position, gameTime);
 
-            Pipe.Update(gameTime);
+                Player.Update(gameTime);
 
-
-
-
+                Pipe.Update(gameTime);
+            }
             //Background.UpdateTransform(Player.Position.X);
             base.Update(gameTime);
         }
@@ -87,20 +95,10 @@ namespace FlapyBird
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            if (Player.HasDied)
-            {
-                _spriteBatch.Begin();
-                string message = "Presione espacio para continuar";
-                _spriteBatch.DrawString(_font, message, new Vector2(_graphics.PreferredBackBufferWidth / 2 - message.Length, _graphics.PreferredBackBufferHeight / 2), Color.Black);
-                _spriteBatch.End();
-            }
-            else
-            {
-                Background.Draw();
-                Player.Draw();
-                Pipe.Draw();
-            }
-            // TODO: Add your drawing code here
+            Background.Draw();
+            Player.Draw();
+            Pipe.Draw();
+            //DO: Add your drawing code here
             base.Draw(gameTime);
         }
     }
