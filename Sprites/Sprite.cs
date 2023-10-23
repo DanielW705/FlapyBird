@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FlapyBird.Globals;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -11,10 +12,6 @@ namespace FlapyBird.Sprites
 {
     public class Sprite
     {
-        protected KeyboardState CurrentKey;
-
-        protected KeyboardState PreviousKey;
-
         public Color Color = Color.White;
 
         public float Speed = 0f;
@@ -23,17 +20,16 @@ namespace FlapyBird.Sprites
 
         protected Texture2D Texture;
 
-        public InputKeyEventArgs InputKey;
+        public Vector2 Position;
 
         public Rectangle Bounds
         {
             get
             {
-                return new Rectangle(0, 0, Texture.Width, Texture.Height);
+                return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height);
             }
         }
 
-        public Vector2 Position;
 
         public Sprite(Texture2D texture, Vector2 position)
         {
@@ -46,9 +42,9 @@ namespace FlapyBird.Sprites
         }
         public virtual void Draw()
         {
-            Globals.SpriteBatch.Begin();
-            Globals.SpriteBatch.Draw(Texture, Position, Bounds, Color.White);
-            Globals.SpriteBatch.End();
+            Global.SpriteBatch.Begin();
+            Global.SpriteBatch.Draw(Texture, Position, Color.White);
+            Global.SpriteBatch.End();
         }
     }
 }

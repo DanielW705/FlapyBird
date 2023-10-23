@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlapyBird
+namespace FlapyBird.Globals
 {
-    public static class Globals
+    public static class Global
     {
-        public static ContentManager Content {  get; set; }
+        public static ContentManager Content { get; set; }
 
         public static SpriteBatch SpriteBatch { get; set; }
 
@@ -19,7 +19,7 @@ namespace FlapyBird
 
         public static float ElapsedSeconds { get; set; }
 
-        public static void Update (GameTime gameTime)
+        public static void Update(GameTime gameTime)
         {
             ElapsedSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
         }

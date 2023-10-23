@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FlapyBird.Globals;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -22,12 +23,12 @@ namespace FlapyBird.Sprites
         }
         public override void Update(GameTime gameTime)
         {
-            if (this.Position.X > Globals.Device.Viewport.Height)
-                this.HasDied = true;
-            else if (this.Position.X < 0)
-                this.HasDied = true;
-            else
-            {
+            //if (this.Position.Y > Global.Device.Viewport.Height)
+            //    this.HasDied = true;
+            //else if (this.Position.Y < 0)
+            //    this.HasDied = true;
+            //else
+            //{
                 float t = (float)gameTime.ElapsedGameTime.Seconds;
 
                 // Se aplica la gravedad en la veloci dad de manera vertical
@@ -44,7 +45,7 @@ namespace FlapyBird.Sprites
 
                 // Se va a modificar la posicion de manera vertical
                 Position.Y += velocity.Y;
-            }
+            //}
         }
 
     }

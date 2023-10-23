@@ -1,7 +1,9 @@
-﻿using FlapyBird.Sprites;
+﻿using FlapyBird.Cameras;
+using FlapyBird.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using FlapyBird.Globals;
 
 namespace FlapyBird
 {
@@ -10,11 +12,15 @@ namespace FlapyBird
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        private SpriteFont _font;
+
         private Player Player;
 
         private Background Background;
 
         private Camera Camera;
+
+        private Pipes Pipe;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -25,8 +31,8 @@ namespace FlapyBird
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            Globals.Content = Content;
-            Globals.Device = GraphicsDevice;
+            Global.Content = Content;
+            Global.Device = GraphicsDevice;
 
             _graphics.PreferredBackBufferWidth = 400;
             _graphics.PreferredBackBufferHeight = 500;
@@ -37,10 +43,14 @@ namespace FlapyBird
 
             Camera = new Camera(GraphicsDevice.Viewport, speed);
 
+            Background = new Background(Content.Load<Texture2D>("background"), Vector2.Zero, Camera.GetViewMatrix());
+
             Player = new Player(Content.Load<Texture2D>("flappy"), new Vector2(0, 0), speed);
 
+            Pipe = new Pipes();
 
-            Background = new Background(Content.Load<Texture2D>("background"), Vector2.Zero, Camera.GetViewMatrix());
+            _font = Content.Load<SpriteFont>("Fonts/Font");
+
             base.Initialize();
         }
 
@@ -48,22 +58,27 @@ namespace FlapyBird
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Globals.SpriteBatch = _spriteBatch;
+            Global.SpriteBatch = _spriteBatch;
 
             // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // TODO: Add your update logic here
-            Globals.Update(gameTime);
+            //// TODO: Add your update logic here
+           if(Pipe.Upper_Bounds.Intersects(Player.Bounds) || Pipe.Lower_Bounds.Intersects(Player.Bounds))
+                Player.HasDied = true;
+            
+            Global.Update(gameTime);
 
             Camera.Update(Player.Position, gameTime);
 
             Player.Update(gameTime);
+
+            Pipe.Update(gameTime);
+
+
+
 
             //Background.UpdateTransform(Player.Position.X);
             base.Update(gameTime);
@@ -72,10 +87,20 @@ namespace FlapyBird
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            if (Player.HasDied)
+            {
+                _spriteBatch.Begin();
+                string message = "Presione espacio para continuar";
+                _spriteBatch.DrawString(_font, message, new Vector2(_graphics.PreferredBackBufferWidth / 2 - message.Length, _graphics.PreferredBackBufferHeight / 2), Color.Black);
+                _spriteBatch.End();
+            }
+            else
+            {
+                Background.Draw();
+                Player.Draw();
+                Pipe.Draw();
+            }
             // TODO: Add your drawing code here
-            Background.Draw();
-            Player.Draw();
             base.Draw(gameTime);
         }
     }

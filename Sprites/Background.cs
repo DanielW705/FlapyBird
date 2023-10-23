@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FlapyBird.Globals;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -24,9 +25,9 @@ namespace FlapyBird.Sprites
         }
         public override void Draw()
         {
-            Globals.SpriteBatch.Begin(transformMatrix: transform);
-            Globals.SpriteBatch.Draw(this.Texture, this.Position, Color.White);
-            Globals.SpriteBatch.End();
+            Global.SpriteBatch.Begin(transformMatrix: transform);
+            Global.SpriteBatch.Draw(this.Texture, this.Position, Color.White);
+            Global.SpriteBatch.End();
 
         }
     }

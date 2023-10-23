@@ -6,18 +6,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlapyBird
+namespace FlapyBird.Cameras
 {
     public class Camera
     {
         public Vector2 Position;
+
         private Viewport viewport;
-        private float cameraSpeed;
+
+        public float cameraSpeed;
 
         public Camera(Viewport viewport, float speed)
         {
             this.viewport = viewport;
-            this.cameraSpeed = speed;
+            cameraSpeed = speed;
         }
 
         public void Update(Vector2 birdPosition, GameTime gameTime)
